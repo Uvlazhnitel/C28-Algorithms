@@ -1,0 +1,58 @@
+import math  # Import the math module for mathematical functions
+
+# Define a function to calculate the area of a triangle using Heron's formula
+def calculate_area(a, b, c):
+    s = (a + b + c) / 2  # Calculate the semi-perimeter
+    return math.sqrt(s * (s - a) * (s - b) * (s - c))  # Calculate and return the area
+
+# Define a function to check if three lengths can form a valid triangle
+def is_valid_triangle(a, b, c):
+    return a + b > c and a + c > b and b + c > a  # Check the triangle inequality theorem
+
+while True:  # Start an infinite loop
+    n = input("Enter the number of elements (0 to quit): ")  # Prompt the user for the number of elements
+    try:
+        n = int(n)  # Attempt to convert the input to an integer
+    except ValueError:  # Catch and handle non-integer inputs
+        print("Invalid input. Please enter a positive integer.")  # Notify the user of invalid input
+        continue  # Continue to the next iteration of the loop
+
+    if n < 0:  # Check if the entered number is negative
+        print("Invalid input. Please enter a positive integer.")  # Notify the user of invalid input
+        continue  # Continue to the next iteration of the loop
+
+    if n == 0:  # Check if the entered number is zero
+        break  # Exit the loop
+
+    if n < 3:  # Check if the number of elements is less than 3
+        print("Invalid input. Please enter a positive integer greater than 2.")  # Notify the user of invalid input
+        continue  # Continue to the next iteration of the loop
+
+    a = []  # Initialize an empty list to store the lengths
+    for i in range(n):  # Loop over the range of elements
+        while True:  # Start an inner infinite loop for input validation
+            length = input(f"Enter length for element {i + 1}: ")  # Ask for each length
+            try:
+                length = float(length)  # Attempt to convert the input to a float
+                if length > 0:  # Check if the length is positive
+                    a.append(length)  # Append the length to the list
+                    break  # Exit the inner loop
+                else:
+                    print("Invalid length. Please enter a positive number greater than 0.")  # Notify the user of invalid input
+            except ValueError:
+                print("Invalid length. Please enter a positive number.")  # Notify the user of invalid input
+
+    triangle_found = False  # Initialize a flag to track if a valid triangle is found
+    # Nested loops to check every combination of three lengths
+    for i in range(n - 2):
+        for j in range(i + 1, n - 1):
+            for k in range(j + 1, n):
+                if is_valid_triangle(a[i], a[j], a[k]):  # Check if a valid triangle can be formed
+                    area = calculate_area(a[i], a[j], a[k])  # Calculate the area
+                    print(f"Triangle: {a[i]}, {a[j]}, {a[k]} | Area: {area}")  # Output the triangle and its area
+                    triangle_found = True  # Set the flag to true
+
+    if not triangle_found:  # Check if no triangle was found
+        print("Error: No valid triangles can be formed with the given lengths.")  # Notify the user
+
+print("Program exited successfully.")  # Indicate that the program has exited
